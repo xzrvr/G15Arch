@@ -1,7 +1,7 @@
 # Table of contents
 
 - [Table of contents](#table-of-contents)
-- [Arch Linux on Asus ROG Zephyrus G14 (G401II)](#arch-linux-on-asus-rog-zephyrus-g14-g401ii)
+- [Arch Linux on Asus ROG Zephyrus G15 (GA502IV)](#arch-linux-on-asus-rog-zephyrus-g15-ga502iv)
 - [Basic Install](#basic-install)
 	- [Prepare and Booting ISO](#prepare-and-booting-iso)
 	- [Networking](#networking)
@@ -45,8 +45,8 @@
 	- [Key delay](#key-delay)
 	- [AUR Helper](#aur-helper)
 
-# Arch Linux on Asus ROG Zephyrus G15 (GA502IV-AZ035T)
-Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch), this guide is a fork of their guide with some variation.
+# Arch Linux on Asus ROG Zephyrus G15 (GA502IV)
+Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's with for the rog G15, some things edited for me, which is a fork of Unim8rix's original G14 arch guide
 
 ![desktop](desk.png)
 
@@ -165,22 +165,22 @@ Add swapfile
 `echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab `
 
 ## Chroot into the new system and change language settings
-You can use a hostname of your choice, I have gone with zephyrus-g14.
+You can use a hostname of your choice, I have gone with "zephyrus".
 ```
 arch-chroot /mnt
-echo zephyrus-g14 > /etc/hostname
-echo LANG=en_US.UTF-8 > /etc/locale.conf
-echo LANGUAGE=en_US >> /etc/locale.conf
-ln -sf /usr/share/zoneinfo/Asia/Karachi /etc/localtime
+echo zephyrus > /etc/hostname
+echo LANG=en_NZ.UTF-8 > /etc/locale.conf
+echo LANGUAGE=en_NZ >> /etc/locale.conf
+ln -sf /usr/share/zoneinfo/Pacific/Auckland /etc/localtime
 hwclock --systohc
 ```
 
-Modify `nano /etc/hosts` with these entries. For static IPs, remove 127.0.1.1. Replace zephyrus-g14 with your hostname.
+Modify `nano /etc/hosts` with these entries. For static IPs, remove 127.0.1.1. Replace "zephyrus" with your hostname that you chosen previously.
 
 ```
 127.0.0.1		localhost
 ::1				localhost
-127.0.1.1		zephyrus-g14.localdomain	zephyrus-g14
+127.0.1.1		zephyrus.localdomain	zephyrus
 ```
 
 `nano /etc/locale.gen` to uncomment the following line
@@ -207,7 +207,7 @@ create Initramfs using `mkinitcpio -P`
 
 `bootctl --path=/boot install` installs bootloader
 
-`nano /boot/loader/loader.conf` delete everything and add these few lines and save
+`nano /boot/loader/loader.conf` delete everything and add these few lines and save the file
 
 ```
 default	arch.conf
@@ -226,20 +226,21 @@ initrd	/initramfs-linux.img
 
 copy boot-options with
 ` echo "options	cryptdevice=UUID=$(blkid -s UUID -o value /dev/nvme0n1p2):luks root=/dev/mapper/luks rootflags=subvol=@ rw" >> /boot/loader/entries/arch.conf` 
+
 **NOTE:** If you chose to not encrypt your home partition, use this command:
 
 `ROOT_PARTITION=<!!!YOUR_ROOT_PARTITION_HERE!!!> && echo "options root=UUID=$(blkid -s UUID -o value ${ROOT_PARTITION}) rootflags=subvol=@ rw" >> /boot/loader/entries/arch.conf`
 
 ## Set nvidia-nouveau onto blacklist 
 
-using `nano /etc/modprobe.d/blacklist-nvidia-nouveau.conf` with these lines
+using `nano /etc/modprobe.d/blacklist-nvidia-nouveau.conf` with these lines and save file
 
 ```
 	blacklist nouveau
 	options nouveau modeset=0
 ```
 
-## Leave Chroot and Reboot
+## Leave Chroot and Reboot to installed
 
 Type `exit` to exit chroot
 
@@ -258,26 +259,27 @@ systemctl enable NetworkManager
 systemctl start NetworkManager
 nmcli device wifi connect YOURSSID password SSIDPASSWORD
 ```
+you can also use nmtui for a tui instead of cli
 
 ## Create a new user 
 
 First create my new local user and point it to zsh
 
 ```
-useradd -m -g users -G wheel,power,audio -s /usr/bin/zsh MYUSERNAME
-passwd MYUSERNAME
+useradd -m -g users -G wheel,lp,power,audio -s /bin/bash MYNEWUSERNAME
+passwd MYNEWUSERNAME
 ```
 
-Edit `nano /etc/sudoers` and uncomment `%wheel ALL=(ALL) ALL`
+Edit `nano /etc/sudoers` and uncomment `%wheel ALL=(ALL:ALL) ALL` or `%wheel ALL=(ALL) ALL`
 
-Now `exit` and relogin with the new MYUSERNAME
+Now `exit` and relogin with the new MYNEWUSERNAME
 
 ## Update your system
-The first thing you should do after installing is to update your system. Open a commandd line and run:
+The first thing you should do after installing is to update your system. Open a command line and run:
 
-`sudo pacman -Syu`
+`sudo pacman -Syyu`
 
-Install some Daemons before we reboot
+Install some daemons before we reboot
 
 ```
 sudo pacman -S acpid dbus 
@@ -565,7 +567,7 @@ sudo systemd-hwdb update
 sudo udevadm trigger
 ```
 
-# KDE Tweaks
+# KDE Tweaks (for kde)
 ## Window Size
 I prefer the apps to open in windowed mode, in the center of the screen with 1280 * 720 resolution. To do this, add Window Rule, name it `Window Size`. Set the following rules
 
@@ -591,7 +593,7 @@ In display and monitor -> gamma, change gamma to 0.9 for better colors
 ```
 Add this scrpit to autostart in KDE settings. For macOS like gestures use [this config](https://github.com/iberianpig/fusuma/wiki/KDE-to-mimic-MacOS.). 4 finger gestures are not working. My config is in the repo.
 
-## Yet Another Magic Lamp
+## Yet Another Magic Lamp (for kde)
 
 A better [magic lamp](https://github.com/zzag/kwin-effects-yet-another-magic-lamp) effect. In latest plasma versions, exclude "disable unsupported effects" next to the search bar in settings for the effect to appear.
 
