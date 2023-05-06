@@ -1,49 +1,51 @@
 # Table of contents
 
-- [Table of contents](#table-of-contents)
 - [Arch Linux on Asus ROG Zephyrus G15 (GA502IV)](#arch-linux-on-asus-rog-zephyrus-g15-ga502iv)
 - [Basic Install](#basic-install)
-	- [Prepare and Booting ISO](#prepare-and-booting-iso)
-	- [Networking](#networking)
-	- [Format Disk](#format-disk)
-	- [Create encrypted filesystem](#create-encrypted-filesystem)
-	- [Create and Mount btrfs Subvolumes](#create-and-mount-btrfs-subvolumes)
-	- [Create a btrfs swapfile and remount subvols](#create-a-btrfs-swapfile-and-remount-subvols)
-	- [Install the system using pacstrap](#install-the-system-using-pacstrap)
-	- [Chroot into the new system and change language settings](#chroot-into-the-new-system-and-change-language-settings)
-	- [Add btrfs and encrypt to Initramfs](#add-btrfs-and-encrypt-to-initramfs)
-	- [Install Systemd Bootloader](#install-systemd-bootloader)
-	- [Set nvidia-nouveau onto blacklist](#set-nvidia-nouveau-onto-blacklist)
-	- [Leave Chroot and Reboot](#leave-chroot-and-reboot)
+  - [Prepare and Booting ISO](#prepare-and-booting-iso)
+  - [Networking](#networking)
+  - [Format Disk](#format-disk)
+  - [Create encrypted filesystem](#create-encrypted-filesystem)
+  - [Create and Mount btrfs Subvolumes](#create-and-mount-btrfs-subvolumes)
+  - [Create a btrfs swapfile and remount subvols](#create-a-btrfs-swapfile-and-remount-subvols)
+  - [Install the system using pacstrap](#install-the-system-using-pacstrap)
+  - [Chroot into the new system and change language settings](#chroot-into-the-new-system-and-change-language-settings)
+  - [Add btrfs and encrypt to Initramfs](#add-btrfs-and-encrypt-to-initramfs)
+  - [Install Systemd Bootloader](#install-systemd-bootloader)
+  - [Set nvidia-nouveau onto blacklist](#set-nvidia-nouveau-onto-blacklist)
+  - [Leave Chroot and Reboot to installed](#leave-chroot-and-reboot-to-installed)
 - [Finetuning after first Reboot](#finetuning-after-first-reboot)
-	- [Enable Networkmanager](#enable-networkmanager)
-	- [Create a new user](#create-a-new-user)
-	- [Update your system](#update-your-system)
-	- [Setup Automatic Snapshots for pacman:](#setup-automatic-snapshots-for-pacman)
-- [Install Desktop Environment](#install-desktop-environment)
-	- [Get X.Org and KDE Plasma](#get-xorg-and-kde-plasma)
-	- [Remove extra KDE Packages](#remove-extra-kde-packages)
-	- [Oh-My-ZSH](#oh-my-zsh)
-	- [Setup Plymouth for nice Password Prompt during Boot](#setup-plymouth-for-nice-password-prompt-during-boot)
-- [Nvidia](#nvidia)
-	- [Optimus Manager](#optimus-manager)
+  - [Enable Networkmanager](#enable-networkmanager)
+  - [Create a new user](#create-a-new-user)
+  - [Update your system](#update-your-system)
+- [Setup automatic Snapshots for Pacman](#setup-automatic-snapshots-for-pacman)
+- [Install Xfce4 Desktop Environment](#install-xfce4-desktop-environment)
+  - [Setup Plymouth for nice Password Prompt during Boot](#setup-plymouth-for-nice-password-prompt-during-boot)
+- [Nvidia propietary drivers](#nvidia-propietary-drivers)
 - [Useful Customizations](#useful-customizations)
-	- [Install asusctl tool](#install-asusctl-tool)
-	- [Install ROG Kernel](#install-rog-kernel)
-	- [Switch Profile On Charger Connect](#switch-profile-on-charger-connect)
-	- [ROG Key Map](#rog-key-map)
-	- [Change Fan Profile](#change-fan-profile)
-	- [Mic Mute Key](#mic-mute-key)
-- [KDE Tweaks](#kde-tweaks)
-	- [Window Size](#window-size)
-	- [Touchpad Gestures](#touchpad-gestures)
-	- [Yet Another Magic Lamp](#yet-another-magic-lamp)
-	- [Maximize to new desktop](#maximize-to-new-desktop)
+  - [Install asusctl tool](#install-asusctl-tool)
+  - [Install ROG/asusctl Kernel](#install-rogasusctl-kernel)
+  - [Switch Profile On Charger Connect](#switch-profile-on-charger-connect)
+  - [ROG Key Map](#rog-key-map)
+  - [Change Fan Profile](#change-fan-profile)
+  - [Mic Mute Key](#mic-mute-key)
+  - [Gamma Correction](#gamma-correction)
+  - [Touchpad Gestures](#touchpad-gestures)
 - [Fixing Audio on Linux](#fixing-audio-on-linux)
 - [Miscellaneous](#miscellaneous)
-	- [Fetch on Terminal Start](#fetch-on-terminal-start)
-	- [Key delay](#key-delay)
-	- [AUR Helper](#aur-helper)
+  - [Fetch on Terminal Start](#fetch-on-terminal-start)
+  - [Key delay](#key-delay)
+  - [AUR Helper](#aur-helper)
+- [KDE Stuff](#kde-stuff)
+  - [Install KDE Desktop Environment (optional)](#install-kde-desktop-environment-optional)
+  - [Remove extra KDE Packages (for kde)](#remove-extra-kde-packages-for-kde)
+  - [Yet Another Magic Lamp](#yet-another-magic-lamp)
+  - [Maximize to new desktop](#maximize-to-new-desktop)
+  - [KDE Tweaks (for kde)](#kde-tweaks-for-kde)
+- [Optimus](#optimus)
+  - [Optimus Manager (for some laptops like mux switch)](#optimus-manager-for-some-laptops-like-mux-switch)
+- [Install easyeffects](#install-easyeffects)
+- [Oh-My-ZSH (for zsh)](#oh-my-zsh-for-zsh)
 
 # Arch Linux on Asus ROG Zephyrus G15 (GA502IV)
 Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's with for the rog G15, some things edited for me, which is a fork of Unim8rix's original G14 arch guide
@@ -200,6 +202,7 @@ Add a password for root using `passwd root`
 `HOOKS="base udev autodetect modconf block encrypt btrfs filesystems keyboard fsck `
 
 Also include `amdgpu` in the MODULES section
+MODULES=(amdgpu)
 
 create Initramfs using `mkinitcpio -P`
 
@@ -323,17 +326,18 @@ LABEL=ROOTFS  /  btrfs  rw,noatime,.....subvol=@snapshots/STABLE
 ...
 ˋˋˋ
 
+
 reboot and test if you can boot from the stable snapshot.
 
 ### Script for auto-snapshots
 
-Copy the script from my Repo to
+Copy the script from my Repo in /usr/bin/autosnap to
 
 `/usr/bin/autosnap` and make it executable with `chmod +x /usr/bin/autosnap`
 
 ### Hook for pacman
 
-Copy the script from my Repo to
+Copy the script from my Repo in /etc/pacman.d/hooks/00-autosnap.hook to
 
 `/etc/pacman.d/hooks/00-autosnap.hook`
 
@@ -360,59 +364,7 @@ sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
 sudo systemctl enable lightdm
 ```
 
-# Install KDE Desktop Environment (optional) 
-
-## Get X.Org and KDE Plasma
-
-Install xorg and kde packages
-
-```
-pacman -S xorg 
-sudo pacman -S plasma kde-applications pulseaudio
-```
-
-SDDM Loginmanager
-
-```
-sudo pacman -S sddm
-sudo systemctl enable sddm
-```
-
 Reboot and login to your new Desktop.
-
-## Remove extra KDE Packages (for kde)
-`kde-applications` installs a bunch of packages that I do not need so I removed them. First remove the following groups of applications.
-```
-sudo pacman -Rns kdepim kde-games kde-education kde-multimedia
-```
-Then, remove some apps from other groups too.
-```
-sudo pacman -R kwrite kcharselect yakuake kdebugsettings kfloppy filelight kteatime konqueror konversation kopete
-```
-To see what various applications do, check out the [kde-applications](https://archlinux.org/groups/x86_64/kde-applications/) group on Arch website.
-
-
-## Oh-My-ZSH (for zsh)
-
-I like to use oh-my-zsh with Powerlevel10K theme
-
-```
-sudo pacman -S git git-lfs curl wget zsh zsh-completions firefox-i18n-de
-chsh -s /bin/zsh # (relogin to activate)
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-mkdir .local/share/fonts
-cd .local/share/fonts
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-fc-cache -v
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-```
-
-Set `ZSH_THEME="powerlevel10k/powerlevel10k"` in `~/.zshrc`
-
-**Fixing terminal resize issue:** On Konsole and some other terminals, prompt is expected to be on the left side only. If right side of the prompt is enabled in powerlevel10k, then resizing Konsole results in the prompt becoming jittery and breaking to multiple lines as shown [here](https://github.com/romkatv/powerlevel10k/blob/master/README.md#horrific-mess-when-resizing-terminal-window). To fix the problem, open Konsole, go to settings -> edit current profile -> Scrolling and disable "Reflow lines" option.
 
 ## Setup Plymouth for nice Password Prompt during Boot
 
@@ -425,18 +377,19 @@ makepkg -is
 ```
 or get a aur manager such as yay or paru
 
-Now modify the Hooks for the Initramfs, Plymouth must be right after "base udev". Delete encrypt hook, it will be replaced by plymouth-encrypt
+Do not replace encrypt with plymouth-encrypt, as plymouth-encrypt no longer exists.
+Now modify the Hooks for the Initramfs, "plymouth" must be right after "base udev" and before "encrypt". 
 
 ```
-HOOKS="base udev plymouth plymouth-encrypt autodetect modconf block btrfs filesystems keyboard fsck
+HOOKS=(base udev plymouth encrypt autodetect modconf kms keyboard keymap consolefont block btrfs filesystems fsck)
 ```
 
-Run `mkinitcpio -P` 
+Run `mkinitcpio -P` and wait for it to finish
 
-Add some kernel-parameters to make boot smooth. Edit `/boot/loader/entries/arch.conf` and append to options
+Add some kernel-parameters after "root=/dev/mapper/luks" to make boot smooth. Edit `/boot/loader/entries/arch.conf` and append to options
 
 ```
-...rootflags=subvol=@ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_priority=3 vt.global_cursor_default=0 rw
+... rootflags=subvol=@ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_priority=3 vt.global_cursor_default=0 rw
 ```
 
 
@@ -453,24 +406,10 @@ Install `nvidia` package from official repos. Double check to see if linux-heade
 ```
 sudo pacman -S nvidia-dkms nvidia-settings nvidia-prime acpi_call
 ```
-## Optimus Manager (for some laptops like mux switch)
-Install optimus-manager and optimus-manager-qt. After rebooting, it should work fine. 
-
-- **Type C external display**
-HDMI works out of the box, displays can be connected to type C port but require switching to dedicated graphics. Can be done either through asusctl or Optimus Manager QT.
-	
-- **Optimus Manager configuration**
-In optimus manager qt, go to optimus tab, and select ACPI call switching method and set PCI reset to No. Enable PCI remove. Startup mode is integrated. In Nvidia, set dynamic power management to fine. Modeset, Pat and overclocking options.
-
-- **Sleep/Shutdown issues**
-System was only going to sleep once and after that got stuck on shutdown and sleep. This happened because I had set switching method to bbswitch in optimus manager. Swithced to acpi_call to fix.
-
 
 # Useful Customizations
 
 ## Install asusctl tool
-
-**NOTE: `asusctl` and `optimus-manager` may conflinct with eachother. If using `asusctl`, it is recommended to uninstall `optimus-manager` with `sudo pacman -Rns optimus-manager optimus-manager-qt`**
 
 Add [Luke Jones](https://asus-linux.org/)'s Repo to pacman.conf (/etc/pacman.conf)
 ```
@@ -515,7 +454,7 @@ Then run `sudo cp /boot/loader/entries/arch.conf /boot/loader/entries/arch-g14.c
 
 Replace the lines that start with `title`, `linux`, and `initrd` with this:
 ```
-title   Arch Linux (g14)
+title   Arch Linux (g14 kernel)
 linux   /vmlinuz-linux-g14
 initrd  /amd-ucode.img
 initrd  /initramfs-linux-g14.img
@@ -567,21 +506,6 @@ sudo systemd-hwdb update
 sudo udevadm trigger
 ```
 
-# KDE Tweaks (for kde)
-## Window Size
-I prefer the apps to open in windowed mode, in the center of the screen with 1280 * 720 resolution. To do this, add Window Rule, name it `Window Size`. Set the following rules
-
-- Window Class: Unimportant
-- Match whole window class: No
-- Window Types: Normal window (deselect all others)
-- Size: Apply Initially, 1280x720
-- Ignore Requested Geometry: Force, Yes.
-
-To make brave launch in 1280x720, do the following:
-- Edit `/usr/share/applications/brave-browser.desktop`
-- line 111: change `Exec=brave %U` to `Exec=brave %U --window-size="1280,720"`
-- Repeat for line 111 and 223
-
 ## Gamma Correction
 In display and monitor -> gamma, change gamma to 0.9 for better colors
 
@@ -592,23 +516,6 @@ In display and monitor -> gamma, change gamma to 0.9 for better colors
  fusuma -d #for running in daemon mode
 ```
 Add this scrpit to autostart in KDE settings. For macOS like gestures use [this config](https://github.com/iberianpig/fusuma/wiki/KDE-to-mimic-MacOS.). 4 finger gestures are not working. My config is in the repo.
-
-## Yet Another Magic Lamp (for kde)
-
-A better [magic lamp](https://github.com/zzag/kwin-effects-yet-another-magic-lamp) effect. In latest plasma versions, exclude "disable unsupported effects" next to the search bar in settings for the effect to appear.
-
-## Maximize to new desktop
-In Kwin scripts, install "kwin-maximize-to-new-desktop" and run:
-```
-mkdir -p ~/.local/share/kservices5
-ln -s ~/.local/share/kwin/scripts/max2NewVirtualDesktop/metadata.desktop ~/.local/share/kservices5/max2NewVirtualDesktop.desktop
-```
-Then install kdesignerplugin through `pacman -S kdesignerplugin`. Logout and login again after configuration changes. My config:
-```
-Trigger: Maximize only
-Position: Next to current
-```
-([git](https://github.com/Aetf/kwin-maxmize-to-new-desktop#window-class-blacklist-in-configuration-is-blank))
 
 # Fixing Audio on Linux
 Audio was exceptionally low on linux. To fix, first remove everything pulseaudio related by running:
@@ -627,20 +534,6 @@ sudo pacman -S bluez bluez-utils
 sudo systemctl enable bluetooth.service
 sudo systemctl start bluetooth.service
 ```
-Install easyeffects
-```
-sudo pacman -S easyeffects
-```
-Run easyeffects and close. This will create the necessary directories.
-Install easyeffects-presets.
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh)"
-```
-Launch easyeffects again, click presets on top left, select Advanced Auto Gain. Close easyeffects, run it as daemon using
-```
-easyeffects --gapplication-service & 
-```
-It automatically adds itself to autostart, and runs as a service on reboot. No other config needed. [Source](https://askubuntu.com/questions/984109/dolby-equivalent-for-ubuntu)
 
 # Miscellaneous
 ## Fetch on Terminal Start
@@ -665,3 +558,120 @@ Examples:
 _Do not run paru as root. It will ask for permission when it needs to._
 
 Alternatively, you can use [pamac](https://aur.archlinux.org/packages/pamac-aur/), which also has a gui.
+
+# KDE Stuff
+
+## Install KDE Desktop Environment (optional) 
+
+### Get X.Org and KDE Plasma
+
+Install xorg and kde packages
+
+```
+pacman -S xorg 
+sudo pacman -S plasma kde-applications pulseaudio
+```
+
+### SDDM Loginmanager
+
+```
+sudo pacman -S sddm
+sudo systemctl enable sddm
+```
+
+## Remove extra KDE Packages (for kde)
+`kde-applications` installs a bunch of packages that I do not need so I removed them. First remove the following groups of applications.
+```
+sudo pacman -Rns kdepim kde-games kde-education kde-multimedia
+```
+Then, remove some apps from other groups too.
+```
+sudo pacman -R kwrite kcharselect yakuake kdebugsettings kfloppy filelight kteatime konqueror konversation kopete
+```
+To see what various applications do, check out the [kde-applications](https://archlinux.org/groups/x86_64/kde-applications/) group on Arch website.
+
+
+## Yet Another Magic Lamp
+
+A better [magic lamp](https://github.com/zzag/kwin-effects-yet-another-magic-lamp) effect. In latest plasma versions, exclude "disable unsupported effects" next to the search bar in settings for the effect to appear.
+
+## Maximize to new desktop
+In Kwin scripts, install "kwin-maximize-to-new-desktop" and run:
+```
+mkdir -p ~/.local/share/kservices5
+ln -s ~/.local/share/kwin/scripts/max2NewVirtualDesktop/metadata.desktop ~/.local/share/kservices5/max2NewVirtualDesktop.desktop
+```
+Then install kdesignerplugin through `pacman -S kdesignerplugin`. Logout and login again after configuration changes. My config:
+```
+Trigger: Maximize only
+Position: Next to current
+```
+([git](https://github.com/Aetf/kwin-maxmize-to-new-desktop#window-class-blacklist-in-configuration-is-blank))
+
+## KDE Tweaks (for kde)
+### Window Size
+I prefer the apps to open in windowed mode, in the center of the screen with 1280 * 720 resolution. To do this, add Window Rule, name it `Window Size`. Set the following rules
+
+- Window Class: Unimportant
+- Match whole window class: No
+- Window Types: Normal window (deselect all others)
+- Size: Apply Initially, 1280x720
+- Ignore Requested Geometry: Force, Yes.
+
+To make brave launch in 1280x720, do the following:
+- Edit `/usr/share/applications/brave-browser.desktop`
+- line 111: change `Exec=brave %U` to `Exec=brave %U --window-size="1280,720"`
+- Repeat for line 111 and 223
+
+# Optimus
+**NOTE: `asusctl` and `optimus-manager` may conflinct with eachother. If using `asusctl`, it is recommended to uninstall `optimus-manager` with `sudo pacman -Rns optimus-manager optimus-manager-qt`**
+
+
+## Optimus Manager (for some laptops like mux switch)
+Install optimus-manager and optimus-manager-qt. After rebooting, it should work fine. 
+
+- **Type C external display**
+HDMI works out of the box, displays can be connected to type C port but require switching to dedicated graphics. Can be done either through asusctl or Optimus Manager QT.
+	
+- **Optimus Manager configuration**
+In optimus manager qt, go to optimus tab, and select ACPI call switching method and set PCI reset to No. Enable PCI remove. Startup mode is integrated. In Nvidia, set dynamic power management to fine. Modeset, Pat and overclocking options.
+
+- **Sleep/Shutdown issues**
+System was only going to sleep once and after that got stuck on shutdown and sleep. This happened because I had set switching method to bbswitch in optimus manager. Swithced to acpi_call to fix.
+
+# Install easyeffects
+```
+sudo pacman -S easyeffects
+```
+Run easyeffects and close. This will create the necessary directories.
+Install easyeffects-presets.
+```
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh)"
+```
+Launch easyeffects again, click presets on top left, select Advanced Auto Gain. Close easyeffects, run it as daemon using
+```
+easyeffects --gapplication-service & 
+```
+It automatically adds itself to autostart, and runs as a service on reboot. No other config needed. [Source](https://askubuntu.com/questions/984109/dolby-equivalent-for-ubuntu)
+
+# Oh-My-ZSH (for zsh)
+
+I like to use oh-my-zsh with Powerlevel10K theme
+
+```
+sudo pacman -S git git-lfs curl wget zsh zsh-completions firefox-i18n-de
+chsh -s /bin/zsh # (relogin to activate)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+mkdir .local/share/fonts
+cd .local/share/fonts
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+fc-cache -v
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+```
+
+Set `ZSH_THEME="powerlevel10k/powerlevel10k"` in `~/.zshrc`
+
+**Fixing terminal resize issue:** On Konsole and some other terminals, prompt is expected to be on the left side only. If right side of the prompt is enabled in powerlevel10k, then resizing Konsole results in the prompt becoming jittery and breaking to multiple lines as shown [here](https://github.com/romkatv/powerlevel10k/blob/master/README.md#horrific-mess-when-resizing-terminal-window). To fix the problem, open Konsole, go to settings -> edit current profile -> Scrolling and disable "Reflow lines" option.
