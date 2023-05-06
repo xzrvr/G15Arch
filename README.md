@@ -201,7 +201,7 @@ Add a password for root using `passwd root`
 `HOOKS="base udev autodetect modconf block encrypt btrfs filesystems keyboard fsck `
 
 Also include `amdgpu` in the MODULES section
-MODULES=(amdgpu)
+`MODULES=(amdgpu)`
 
 create Initramfs using `mkinitcpio -P`
 
