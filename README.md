@@ -48,7 +48,7 @@
 - [Oh-My-ZSH (for zsh)](#oh-my-zsh-for-zsh)
 
 # Arch Linux on Asus ROG Zephyrus G15 (GA502IV)
-Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's with for the rog G15, some things edited for me, which is a fork of Unim8rix's original G14 arch guide
+Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's for the G14, which is a fork of Unim8rix's original G14 arch guide. this guide for rog G15, with things edited for my laptop (ga502iv-az035t)
 
 ![desktop](desk.png)
 
