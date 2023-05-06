@@ -277,18 +277,88 @@ The first thing you should do after installing is to update your system. Open a 
 
 `sudo pacman -Syu`
 
-Install some Deamons before we reboot
+Install some Daemons before we reboot
 
 ```
 sudo pacman -S acpid dbus 
 sudo systemctl enable acpid
 ```
 
-## Setup Automatic Snapshots for pacman:
-To setup automatic snapshots everytime system updates, follow the section from Unim8rix's [guide](https://github.com/Unim8trix/G14Arch)
+# Setup automatic Snapshots for Pacman
+
+The goal is to have automatic snapshots each time i made changes with pacman. The hook creates a snapshot
+to ".snapshots\STABLE". So if something goes wrong i can boot from this snapshot and rollback my system.
 
 
-# Install Desktop Environment
+### Create the STABLE snapshot and modify Bootloader
+
+First i create the snapshot and changes by hand to test if anythink is working. After that it will be done automaticly by our hook and script.
+
+```bash
+sudo -i
+btrfs sub snap / /.snapshots/STABLE
+cp /boot/vmlinuz-linux /boot/vmlinuz-linux-stable
+cp /boot/amd-ucode.img /boot/amd-ucode-stable.img
+cp /boot/initramfs-linux.img /boot/initramfs-linux-stable.img
+cp /boot/loader/entries/arch.conf /boot/loader/entries/stable.conf
+```
+
+Edit `/boot/loader/entries/stable.conf` to boot from STABLE snapshot
+
+```bash
+title   Arch Linux Stable
+linux   /vmlinuz-linux-stable
+initrd  /amd-ucode-stable.img
+initrd  /initramfs-linux-stable.img
+options ... rootflags=subvol=@snapshots/STABLE rw
+```
+
+Now edit the `/.snapshots/STABLE/etc/fstab` to change the root to the new snapshot/STABLE
+
+ˋˋˋ
+...
+LABEL=ROOTFS  /  btrfs  rw,noatime,.....subvol=@snapshots/STABLE
+...
+ˋˋˋ
+
+reboot and test if you can boot from the stable snapshot.
+
+### Script for auto-snapshots
+
+Copy the script from my Repo to
+
+`/usr/bin/autosnap` and make it executable with `chmod +x /usr/bin/autosnap`
+
+### Hook for pacman
+
+Copy the script from my Repo to
+
+`/etc/pacman.d/hooks/00-autosnap.hook`
+
+Now each time pacman executes, it launches the `autosnap`script which takes a snapshot from the current system.
+
+
+# Install Xfce4 Desktop Environment
+
+### Get X.Org and Xfce4
+
+Install xorg and xfce4 packages
+
+```bash
+sudo pacman -Sy xorg xfce4 xfce4-goodies xf86-input-synaptics gvfs xdg-user-dirs ttf-dejavu pulseaudio network-manager-applet firefox-i18n-de git git-lfs curl wget
+
+sudo localectl set-x11-keymap de pc105 deadgraveacute
+xdg-user-dirs-update
+```
+
+LightDM Loginmanager
+
+```bash
+sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+sudo systemctl enable lightdm
+```
+
+# Install KDE Desktop Environment (optional) 
 
 ## Get X.Org and KDE Plasma
 
@@ -308,7 +378,7 @@ sudo systemctl enable sddm
 
 Reboot and login to your new Desktop.
 
-## Remove extra KDE Packages
+## Remove extra KDE Packages (for kde)
 `kde-applications` installs a bunch of packages that I do not need so I removed them. First remove the following groups of applications.
 ```
 sudo pacman -Rns kdepim kde-games kde-education kde-multimedia
@@ -320,7 +390,7 @@ sudo pacman -R kwrite kcharselect yakuake kdebugsettings kfloppy filelight kteat
 To see what various applications do, check out the [kde-applications](https://archlinux.org/groups/x86_64/kde-applications/) group on Arch website.
 
 
-## Oh-My-ZSH
+## Oh-My-ZSH (for zsh)
 
 I like to use oh-my-zsh with Powerlevel10K theme
 
@@ -351,6 +421,7 @@ cd AUR
 git clone https://aur.archlinux.org/plymouth-git.git
 makepkg -is
 ```
+or get a aur manager such as yay or paru
 
 Now modify the Hooks for the Initramfs, Plymouth must be right after "base udev". Delete encrypt hook, it will be replaced by plymouth-encrypt
 
@@ -373,13 +444,14 @@ sudo plymouth-set-default-theme -R bgrt
 ```
 
 For KDE Theming you could check this nice [Youtube Video from Linux Scoop](https://www.youtube.com/watch?v=2GYT7BK41zk)
+For XFCE4 Theming you could check this nice [Youtube Video from Linux Scoop](https://www.youtube.com/watch?v=X3siZNJN3ec)
 
-# Nvidia
+# Nvidia propietary drivers
 Install `nvidia` package from official repos. Double check to see if linux-headers are installed to avoid blackscreen on reboot.  Do NOT run `nvidia-xconfig` on Arch as it results in black screen. Install the following packages:
 ```
 sudo pacman -S nvidia-dkms nvidia-settings nvidia-prime acpi_call
 ```
-## Optimus Manager
+## Optimus Manager (for some laptops like mux switch)
 Install optimus-manager and optimus-manager-qt. After rebooting, it should work fine. 
 
 - **Type C external display**
@@ -398,7 +470,7 @@ System was only going to sleep once and after that got stuck on shutdown and sle
 
 **NOTE: `asusctl` and `optimus-manager` may conflinct with eachother. If using `asusctl`, it is recommended to uninstall `optimus-manager` with `sudo pacman -Rns optimus-manager optimus-manager-qt`**
 
-Add [Luke Jones](https://asus-linux.org/)'s Repo to pacman.conf
+Add [Luke Jones](https://asus-linux.org/)'s Repo to pacman.conf (/etc/pacman.conf)
 ```
 sudo bash -c "echo -e '\r[g14]\nSigLevel = DatabaseNever Optional TrustAll\nServer = https://arch.asus-linux.org\n' >> /etc/pacman.conf"
 
@@ -411,7 +483,7 @@ systemctl --user enable asus-notify
 systemctl --user start asus-notify
 ```
 
-Run the following commands:
+Run the following commands: 
 ```
 asusctl -c 85 		# Sets charge limit to 85% if you do not want this, do not execute this line
 asusctl fan-curve -m Quiet -f cpu -e true
@@ -424,7 +496,7 @@ asusctl fan-curve -m Balanced -f gpu -e true
 
 For fine-tuning read the [Arch Linux Wiki](https://wiki.archlinux.org/title/ASUS_GA401I#ASUSCtl) or the [Repository from Luke](https://gitlab.com/asus-linux/asusctl). asusctl requires kernel 5.15+, which at the time of writing has not been released. Install the ROG kernel instead.
 
-## Install ROG Kernel
+## Install ROG/asusctl Kernel
 After adding the above repo, install the ROG kernel by running
 ```
 sudo pacman -S linux-g14 linux-g14-headers 
