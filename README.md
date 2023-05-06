@@ -19,7 +19,8 @@
   - [Create a new user](#create-a-new-user)
   - [Update your system](#update-your-system)
 - [Setup automatic Snapshots for Pacman](#setup-automatic-snapshots-for-pacman)
-- [Install Xfce4 Desktop Environment](#install-xfce4-desktop-environment)
+- [Install Xfce4 or kde Desktop Environment](#install-xfce4-or-kde-desktop-environment)
+  - [Get X.Org and Xfce4](#get-xorg-and-xfce4)
   - [Setup Plymouth for nice Password Prompt during Boot](#setup-plymouth-for-nice-password-prompt-during-boot)
 - [Nvidia propietary drivers](#nvidia-propietary-drivers)
 - [Useful Customizations](#useful-customizations)
@@ -31,7 +32,6 @@
   - [Mic Mute Key](#mic-mute-key)
   - [Gamma Correction](#gamma-correction)
   - [Touchpad Gestures](#touchpad-gestures)
-- [Fixing Audio on Linux](#fixing-audio-on-linux)
 - [Miscellaneous](#miscellaneous)
   - [Fetch on Terminal Start](#fetch-on-terminal-start)
   - [Key delay](#key-delay)
@@ -48,7 +48,7 @@
 - [Oh-My-ZSH (for zsh)](#oh-my-zsh-for-zsh)
 
 # Arch Linux on Asus ROG Zephyrus G15 (GA502IV)
-Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's for the G14, which is a fork of Unim8rix's original G14 arch guide. this guide for rog G15, with things edited for my laptop (ga502iv-az035t)
+Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's for the G14, which is a fork of Unim8rix's original G14 arch guide that is now dead. this guide for rog G15, with things edited for the laptop and my preferences (ga502iv-az035t)
 
 ![desktop](desk.png)
 
@@ -61,7 +61,7 @@ Boot Arch Linux using a prepared USB stick. [Rufus](https://rufus.ie/en/) can be
 
 ## Networking
 
-For Network i use wireless, if you need wired please check the [Arch WiKi](https://wiki.archlinux.org/index.php/Network_configuration). 
+For Network i use wireless, if you need wired please check the [Arch WiKi](https://wiki.archlinux.org/index.php/Network_configuration).  it should work automatically for wired.
 
 Launch `iwctl` and connect to your AP like this:
 * `station wlan0 scan`
@@ -346,12 +346,12 @@ Now each time pacman executes, it launches the `autosnap`script which takes a sn
 
 # Install Xfce4 or kde Desktop Environment
 
-### Get X.Org and Xfce4
+## Get X.Org and Xfce4
 
 Install xorg and xfce4 packages
 
 ```bash
-sudo pacman -Sy xorg xfce4 xfce4-goodies xf86-input-synaptics gvfs xdg-user-dirs ttf-dejavu pulseaudio network-manager-applet firefox-i18n-de git git-lfs curl wget
+sudo pacman -Sy xorg xfce4 xfce4-goodies xf86-input-synaptics gvfs xdg-user-dirs ttf-dejavu network-manager-applet firefox-i18n-de git git-lfs curl wget
 
 sudo localectl set-x11-keymap de pc105 deadgraveacute
 xdg-user-dirs-update
@@ -364,6 +364,17 @@ sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
 sudo systemctl enable lightdm
 ```
 if you want to use kde instead, go [here](#kde-stuff)
+
+### Fixing Audio on Linux
+Audio was exceptionally low on linux. To fix, first remove everything pulseaudio related by running:
+```
+sudo pacman -Rdd pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-ctl pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf pulseaudio-equalizer-ladspa
+```
+Most of this may not be installed already so remove it from the command.
+Then, install pipewire and its related packages.
+```
+sudo pacman -S pipewire pipewire-pulse gst-plugin-pipewire pipewire-alsa pipewire-media-session
+```
 
 Reboot and login to your new Desktop.
 
@@ -517,17 +528,6 @@ In display and monitor -> gamma, change gamma to 0.9 for better colors
  fusuma -d #for running in daemon mode
 ```
 Add this script to autostart in KDE settings. For macOS like gestures use [this config](https://github.com/iberianpig/fusuma/wiki/KDE-to-mimic-MacOS.). 4 finger gestures are not working. My config is in the repo.
-
-# Fixing Audio on Linux
-Audio was exceptionally low on linux. To fix, first remove everything pulseaudio related by running:
-```
-sudo pacman -Rdd pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-ctl pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf pulseaudio-equalizer-ladspa
-```
-Most of this may not be installed already so remove it from the command.
-Then, install pipewire and its related packages.
-```
-sudo pacman -S pipewire pipewire-pulse gst-plugin-pipewire pipewire-alsa pipewire-media-session
-```
 
 Install bluetooth related packages
 ```
