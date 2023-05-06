@@ -67,6 +67,7 @@ Launch `iwctl` and connect to your AP like this:
 * `station wlan0 scan`
 * `station wlan0 get-networks`
 * `station wlan0 connect YOURSSID` 
+you can also use `nmtui` if you prefer it.
 
 Type `exit` to leave.
 
@@ -79,7 +80,7 @@ Update System clock with `timedatectl set-ntp true`
 
 	**Mount Point**|**Partition**|**Partition type**|**Size**
 	:-----:|:-----:|:-----:|:-----:
-	/mnt/boot| /dev/boot\_partition| EFI system partition| At least 300MB \(Would suggest more if planning to run multiple kernels\)
+	/mnt/boot| /dev/boot\_partition| EFI system partition| At least 400MB \(Would suggest more if planning to run multiple kernels\)
 	/mnt| /dev/root\_partition| Linux Filesystem| Remainder of device
 
 After partitioning, run `lsblk` to identify your partitions:
@@ -88,8 +89,8 @@ _Sample `lsblk` output_:
 ```
 NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 nvme0n1     259:0    0 476.9G  0 disk
-├─nvme0n1p1 259:1    0   300M  0 part 			 // This is our EFI partition
-└─nvme0n1p2 259:2    0 476.6G  0 part 			 // This is our Home partition
+├─nvme0n1p1 259:1    0 1G      0 part 			 // This is our EFI partition, i will do 1 gb
+└─nvme0n1p2 259:2    0 476.6G  0 part 			 // This is our Home partition, using the rest of the disk
 ```
 
 Identify your EFI partition, in this case `/dev/nvme0n1p1`, and format it like this:
