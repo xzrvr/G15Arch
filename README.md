@@ -129,7 +129,7 @@ swapon /mnt/@swap/swapfile
 ```
 that only works for btrfs-progs 6.1 or higher
 
-if u want to increase or decrease swap size, just change `--size 16g` to `--size (size-in-gb's)g
+if u want to increase or decrease swap size, just change `--size 16g` to `--size (size-in-gb's)g`
 make sure that it is `g` not `gb`
 
 Just unmount with `umount /mnt/` and remount with subvolumes
