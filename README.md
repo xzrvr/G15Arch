@@ -121,17 +121,15 @@ Mount Partitions und create Subvol for btrfs. I dont want home, etc in my snapsh
 ## Create a btrfs swapfile and remount subvols
 
 ```
-truncate -s 0 /mnt/@swap/swapfile
-chattr +C /mnt/@swap/swapfile
-btrfs property set /mnt/@swap/swapfile compression none
-fallocate -l ${SWAP_SIZE} /mnt/@swap/swapfile
-chmod 600 /mnt/@swap/swapfile
-mkswap /mnt/@swap/swapfile
+btrfs filesystem mkswapfile --size 16g /mnt/@swap/swapfile
+chmod 0600 /mnt/@swap/swapfile
 mkdir /mnt/@/swap
+swapon /mnt/@swap/swapfile
 ```
+that only works for btrfs-progs 6.1 or higher
 
-Replace `${SWAP_SIZE}` with the amount of swap space you want. Typically you should have the same amount of swap as RAM. So if you have 16GB of ram, you should have 16GB of swap space. For example, a 16GB swap would be created like this:
-`fallocate -l 16G /mnt/@swap/swapfile`. Notice that the size in GB is denoted with a G as a suffix and **NOT** GB.
+if u want to increase or decrease swap size, just change `--size 16g` to `--size (size-in-gb's)g
+make sure that it is `g` not `gb`
 
 Just unmount with `umount /mnt/` and remount with subvolumes
 
