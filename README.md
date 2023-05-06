@@ -344,7 +344,7 @@ Copy the script from my Repo in /etc/pacman.d/hooks/00-autosnap.hook to
 Now each time pacman executes, it launches the `autosnap`script which takes a snapshot from the current system.
 
 
-# Install Xfce4 Desktop Environment
+# Install Xfce4 or kde Desktop Environment
 
 ### Get X.Org and Xfce4
 
@@ -363,6 +363,7 @@ LightDM Loginmanager
 sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
 sudo systemctl enable lightdm
 ```
+if you want to use kde instead, go [here](#kde-stuff)
 
 Reboot and login to your new Desktop.
 
@@ -515,7 +516,7 @@ In display and monitor -> gamma, change gamma to 0.9 for better colors
  #!/bin/bash
  fusuma -d #for running in daemon mode
 ```
-Add this scrpit to autostart in KDE settings. For macOS like gestures use [this config](https://github.com/iberianpig/fusuma/wiki/KDE-to-mimic-MacOS.). 4 finger gestures are not working. My config is in the repo.
+Add this script to autostart in KDE settings. For macOS like gestures use [this config](https://github.com/iberianpig/fusuma/wiki/KDE-to-mimic-MacOS.). 4 finger gestures are not working. My config is in the repo.
 
 # Fixing Audio on Linux
 Audio was exceptionally low on linux. To fix, first remove everything pulseaudio related by running:
