@@ -5,7 +5,7 @@
   - [Prepare and Booting ISO](#prepare-and-booting-iso)
   - [Networking](#networking)
   - [Format Disk](#format-disk)
-  - [Create encrypted filesystem](#create-encrypted-filesystem)
+  - [Create encrypted filesystem (Optional)](#create-encrypted-filesystem-optional)
   - [Create and Mount btrfs Subvolumes](#create-and-mount-btrfs-subvolumes)
   - [Create a btrfs swapfile and remount subvols](#create-a-btrfs-swapfile-and-remount-subvols)
   - [Install the system using pacstrap](#install-the-system-using-pacstrap)
@@ -98,7 +98,7 @@ Identify your EFI partition, in this case `/dev/nvme0n1p1`, and format it like t
 `mkfs.vfat -F 32 -n EFI /dev/nvme0n1p1` 
 
 
-## Create encrypted filesystem 
+## Create encrypted filesystem (Optional)
 _**Note**: This step is optional. If you do not want to use encryption, you can skip this step. Just remember that you need to replace any lines that contain `/dev/mapper/luks` with your "Linux Filesystem" partition \(`/dev/nvme0n1p2` in this case\)._
 
 ```
