@@ -45,10 +45,10 @@
 	- [Key delay](#key-delay)
 	- [AUR Helper](#aur-helper)
 
-# Arch Linux on Asus ROG Zephyrus G14 (G401II)
-Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G14. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch), this guide is a fork of their guide with some variation.
+# Arch Linux on Asus ROG Zephyrus G15 (GA502IV-AZ035T)
+Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch), this guide is a fork of their guide with some variation.
 
-![Screenshot_20210922_175229](https://user-images.githubusercontent.com/28199865/134347373-a60623ad-f66a-4f8e-ab12-7a2e0b005313.png)
+![desktop](desk.png)
 
 
 # Basic Install
