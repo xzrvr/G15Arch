@@ -1,0 +1,53 @@
+"730"
+{
+	"ChangeNumber"		"-7995120862634738020"
+	"ostype"		"-184"
+	"cfg/config.cfg"
+	{
+		"root"		"0"
+		"size"		"17441"
+		"localtime"		"1683366822"
+		"time"		"1683366821"
+		"remotetime"		"1683366821"
+		"sha"		"d0e7eff80d4909a983d04b1538d576fa3d3ef4cb"
+		"syncstate"		"1"
+		"persiststate"		"0"
+		"platformstosync2"		"-1"
+	}
+	"cfg/csgo_saved_item_shuffles.txt"
+	{
+		"root"		"0"
+		"size"		"24"
+		"localtime"		"1671597272"
+		"time"		"1671597271"
+		"remotetime"		"1671597271"
+		"sha"		"c7bdc563982fc4ddddb9e6f8853b298967d858f9"
+		"syncstate"		"1"
+		"persiststate"		"0"
+		"platformstosync2"		"-1"
+	}
+	"cfg/xhair3_backup.cfg"
+	{
+		"root"		"0"
+		"size"		"17428"
+		"localtime"		"1682660110"
+		"time"		"1682660110"
+		"remotetime"		"1682660110"
+		"sha"		"6a13f794ddb634d686d28f84ccb3c6b8bf654d74"
+		"syncstate"		"1"
+		"persiststate"		"0"
+		"platformstosync2"		"-1"
+	}
+	"cfg/xh_panorama_c01.cfg"
+	{
+		"root"		"0"
+		"size"		"17584"
+		"localtime"		"1679276676"
+		"time"		"1679276676"
+		"remotetime"		"1679276676"
+		"sha"		"e7d619c5c08f8909e09b0bd2ca22d07fa6cdfd8e"
+		"syncstate"		"1"
+		"persiststate"		"0"
+		"platformstosync2"		"-1"
+	}
+}
