@@ -146,7 +146,6 @@ Mount Partitions und create Subvol for btrfs. I dont want home, etc in my snapsh
 
 ```
 btrfs filesystem mkswapfile --size 16g /mnt/@swap/swapfile
-chmod 0600 /mnt/@swap/swapfile
 mkdir /mnt/@/swap
 swapon /mnt/@swap/swapfile
 ```
