@@ -409,7 +409,7 @@ cd AUR
 git clone https://aur.archlinux.org/plymouth-git.git
 makepkg -is
 ```
-or get a aur manager such as yay or paru
+or get a [aur manager such as yay or paru](#aur-helper)
 
 Do not replace encrypt with plymouth-encrypt, as plymouth-encrypt no longer exists.
 Now modify the Hooks for the Initramfs, "plymouth" must be right after "base udev" and before "encrypt". 
