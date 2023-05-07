@@ -4,7 +4,8 @@
 - [Basic Install](#basic-install)
   - [Prepare and Booting ISO](#prepare-and-booting-iso)
   - [Networking](#networking)
-  - [Format Disk](#format-disk)
+  - [Format Disk (Using cfdisk)](#format-disk-using-cfdisk)
+  - [Format Disk (Using gdisk)](#format-disk-using-gdisk)
   - [Create encrypted filesystem (Optional)](#create-encrypted-filesystem-optional)
   - [Create and Mount btrfs Subvolumes](#create-and-mount-btrfs-subvolumes)
   - [Create a btrfs swapfile and remount subvols](#create-a-btrfs-swapfile-and-remount-subvols)
@@ -80,7 +81,7 @@ Type `exit` to leave.
 
 Update System clock with `timedatectl set-ntp true`
 
-## Format Disk
+## Format Disk (Using cfdisk)
 
 * My Disk is `nvme0n1`, check with `lsblk`
 * Format Disk using `cfdisk /dev/nvme0n1` with this simple layout:
@@ -103,6 +104,21 @@ nvme0n1     259:0    0 476.9G  0 disk
 Identify your EFI partition, in this case `/dev/nvme0n1p1`, and format it like this:
 
 `mkfs.vfat -F 32 -n EFI /dev/nvme0n1p1` 
+
+## Format Disk (Using gdisk)
+
+* My Disk is `nvme0n1`, check with `lsblk`
+* Format Disk using `gdisk /dev/nvme0n1` with this simple layout:
+
+	* `o` for new partition table
+	* `n,1,<ENTER>,+1024M,ef00` for EFI Boot
+	* `n,2,<ENTER>,<ENTER>,8300` for the linux partition
+	* `w` to save layout
+
+
+Format the EFI Partition
+
+`mkfs.vfat -F 32 -n EFI /dev/nvme0n1p1`
 
 
 ## Create encrypted filesystem (Optional)
