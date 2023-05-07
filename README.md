@@ -219,9 +219,9 @@ Add a password for root using `passwd root`
 
 ## Add btrfs and encrypt to Initramfs
 
-`nano /etc/mkinitcpio.conf` and add `encrypt btrfs` to hooks between block/filesystems. **NOTE:** If you chose to not encrypt your home partition, do not add `encrypt` to `HOOKS`.
+`nano /etc/mkinitcpio.conf` and add `encrypt btrfs` to hooks between block/filesystems. **NOTE:** If you chose to not encrypt your home partition, do not add `encrypt` to `HOOKS`. and put `resume` udev after filesystems/keyboard and before fsck if u want hibernation
 
-`HOOKS="base udev autodetect modconf block encrypt btrfs filesystems keyboard fsck `
+`HOOKS="base udev autodetect modconf block encrypt btrfs filesystems keyboard resume fsck `
 
 Also include `amdgpu` in the MODULES section
 `MODULES=(amdgpu)`
