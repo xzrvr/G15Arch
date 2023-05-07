@@ -19,8 +19,12 @@
   - [Create a new user](#create-a-new-user)
   - [Update your system](#update-your-system)
 - [Setup automatic Snapshots for Pacman](#setup-automatic-snapshots-for-pacman)
+    - [Create the STABLE snapshot and modify Bootloader](#create-the-stable-snapshot-and-modify-bootloader)
+    - [Script for auto-snapshots](#script-for-auto-snapshots)
+    - [Hook for pacman](#hook-for-pacman)
 - [Install Xfce4 or kde Desktop Environment](#install-xfce4-or-kde-desktop-environment)
   - [Get X.Org and Xfce4](#get-xorg-and-xfce4)
+  - [Fixing Audio on Linux](#fixing-audio-on-linux)
   - [Setup Plymouth for nice Password Prompt during Boot](#setup-plymouth-for-nice-password-prompt-during-boot)
 - [Nvidia propietary drivers](#nvidia-propietary-drivers)
 - [Useful Customizations](#useful-customizations)
@@ -36,15 +40,18 @@
   - [Fetch on Terminal Start](#fetch-on-terminal-start)
   - [Key delay](#key-delay)
   - [AUR Helper](#aur-helper)
+  - [Install Viper4Linux](#install-viper4linux)
 - [KDE Stuff](#kde-stuff)
   - [Install KDE Desktop Environment (optional)](#install-kde-desktop-environment-optional)
+    - [Get X.Org and KDE Plasma](#get-xorg-and-kde-plasma)
+    - [SDDM Loginmanager](#sddm-loginmanager)
   - [Remove extra KDE Packages (for kde)](#remove-extra-kde-packages-for-kde)
   - [Yet Another Magic Lamp](#yet-another-magic-lamp)
   - [Maximize to new desktop](#maximize-to-new-desktop)
   - [KDE Tweaks (for kde)](#kde-tweaks-for-kde)
+    - [Window Size](#window-size)
 - [Optimus](#optimus)
   - [Optimus Manager (for some laptops like mux switch)](#optimus-manager-for-some-laptops-like-mux-switch)
-- [Install easyeffects](#install-easyeffects)
 - [Oh-My-ZSH (for zsh)](#oh-my-zsh-for-zsh)
 
 # Arch Linux on Asus ROG Zephyrus G15 (GA502IV)
@@ -364,7 +371,7 @@ sudo systemctl enable lightdm
 ```
 if you want to use kde instead, go [here](#kde-stuff)
 
-### Fixing Audio on Linux
+## Fixing Audio on Linux
 Audio was exceptionally low on linux. To fix, first remove everything pulseaudio related by running:
 ```
 sudo pacman -Rdd pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-ctl pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf pulseaudio-equalizer-ladspa
@@ -558,6 +565,13 @@ Examples:
 _Do not run paru as root. It will ask for permission when it needs to._
 
 Alternatively, you can use [pamac](https://aur.archlinux.org/packages/pamac-aur/), which also has a gui.
+Or, you can use [yay](https://aur.archlinux.org/packages/yay)
+
+## Install Viper4Linux
+```
+yay -S viper4linux-git
+yay -S viper4linux-gui
+```
 
 # KDE Stuff
 
@@ -638,21 +652,6 @@ In optimus manager qt, go to optimus tab, and select ACPI call switching method 
 
 - **Sleep/Shutdown issues**
 System was only going to sleep once and after that got stuck on shutdown and sleep. This happened because I had set switching method to bbswitch in optimus manager. Swithced to acpi_call to fix.
-
-# Install easyeffects
-```
-sudo pacman -S easyeffects
-```
-Run easyeffects and close. This will create the necessary directories.
-Install easyeffects-presets.
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/JackHack96/PulseEffects-Presets/master/install.sh)"
-```
-Launch easyeffects again, click presets on top left, select Advanced Auto Gain. Close easyeffects, run it as daemon using
-```
-easyeffects --gapplication-service & 
-```
-It automatically adds itself to autostart, and runs as a service on reboot. No other config needed. [Source](https://askubuntu.com/questions/984109/dolby-equivalent-for-ubuntu)
 
 # Oh-My-ZSH (for zsh)
 
