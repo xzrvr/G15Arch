@@ -56,7 +56,7 @@
 - [Oh-My-ZSH (for zsh)](#oh-my-zsh-for-zsh)
 
 # Arch Linux on Asus ROG Zephyrus G15 (GA502IV)
-Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's for the G14, which is a fork of Unim8rix's original G14 arch guide that is now dead. this guide for rog G15, with things edited for the laptop and my preferences (ga502iv-az035t) and with some updated commands.
+Guide to install Arch Linux with btrfs, disc encryption, auto-snapshots, no-noise fan-curves on Asus ROG Zephyrus G15. Credits to [Unim8rix](https://github.com/Unim8trix/G14Arch) and [k-amin07](https://github.com/k-amin07/G14Arch), this guide is a fork of k-amin07's for the G14, which is a fork of Unim8rix's original G14 arch guide that is now dead. this guide for rog G15, with things edited for the laptop like hibernation and my preferences (ga502iv-az035t) and with some updated commands.
 
 ![desktop](desk.png)
 
@@ -188,7 +188,7 @@ Add swapfile
 `echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab `
 
 ## Chroot into the new system and change language settings
-You can use a hostname of your choice, I have gone with "zephyrus".
+You can use a hostname of your choice, I have gone with "zephyrus".md
 ```
 arch-chroot /mnt
 echo zephyrus > /etc/hostname
@@ -689,3 +689,7 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 Set `ZSH_THEME="powerlevel10k/powerlevel10k"` in `~/.zshrc`
 
 **Fixing terminal resize issue:** On Konsole and some other terminals, prompt is expected to be on the left side only. If right side of the prompt is enabled in powerlevel10k, then resizing Konsole results in the prompt becoming jittery and breaking to multiple lines as shown [here](https://github.com/romkatv/powerlevel10k/blob/master/README.md#horrific-mess-when-resizing-terminal-window). To fix the problem, open Konsole, go to settings -> edit current profile -> Scrolling and disable "Reflow lines" option.
+
+https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Hibernation
+https://wiki.archlinux.org/title/btrfs#Swap_file
+https://confluence.jaytaala.com/display/TKB/Use+a+swap+file+and+enable+hibernation+on+Arch+Linux+-+including+on+a+LUKS+root+partition
