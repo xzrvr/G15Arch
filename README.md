@@ -188,7 +188,7 @@ Add swapfile
 `echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab `
 
 ## Chroot into the new system and change language settings
-You can use a hostname of your choice, I have gone with "zephyrus".md
+You can use a hostname of your choice, I have gone with "zephyrus"
 ```
 arch-chroot /mnt
 echo zephyrus > /etc/hostname
